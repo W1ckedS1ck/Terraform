@@ -22,7 +22,7 @@ Identity and Access Management (IAM) - Users - Access key - Programmatic access 
 - So that no one sees our credits, we will do this (BTW aws-cli works with this envs too):
 ```bash
 export AWS_ACCES_KEY_ID=AKIAVW4O6LWCEL35GXF3                          #  {your access_key}
-export AWS_SECRET_ACCES_KEY=pR+VGNaoss6KeU2E4Uy9wOYHNo6NDs1iSKIo28Ri  #  {your secret_key} *THIS ONE IS FAKE*
+export AWS_SECRET_ACCES_KEY=pR+                                       #  {your secret_key} *THIS ONE IS FAKE*
 export AWS_DEFAULT_REGION=eu-central-1                                #  {your aws region}
 ```
 
@@ -52,7 +52,7 @@ terraform apply
  - Outpul values can be used as variables this way ${values}
 
 
- 
+
 ```sh
 terraform destroy # Shut down all the instances mentioned in .tf file
 ```
