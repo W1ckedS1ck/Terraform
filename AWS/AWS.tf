@@ -2,12 +2,12 @@
 
 provider "aws" {
 access_key = "AKIAVW4O6LWCFOTXYANP"
-secret_key = "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"
+secret_key = "lUW7dD8TjCkuRzhi8+"
   region = var.region
 }
 provider "aws" {
   access_key = "AKIAVW4O6LWCFOTXYANP"
-  secret_key = "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"
+  secret_key = "lUW7dD8TjCkuRzhi8+"
   region = "eu-central-1"
   alias = "GERMANY"
 }
