@@ -1,6 +1,4 @@
-# **This is my trainee with Terraform ann GCP**
-
-> Note:  https://learn.hashicorp.com/collections/terraform/gcp-get-started
+# **This is my trainee with Terraform and clouds**
 ---
 - Installing Terraform. "curl" should be allready installed on your system.
 ```sh
@@ -19,7 +17,7 @@ Identity and Access Management (IAM) - Users - Access key - Programmatic access 
 
 - Lets create our first tf file in AWS folder and call it AWS.tf
 
-- So that no one sees our credits, we will do this (BTW aws-cli works with this envs too):
+- So that no one can see our credits, we will do this (BTW aws-cli works with this envs too):
 ```bash
 export AWS_ACCES_KEY_ID=AKIAVW4O6LWCEL35GXF3                          #  {your access_key}
 export AWS_SECRET_ACCES_KEY=pR+                                       #  {your secret_key} *THIS ONE IS FAKE*
@@ -29,20 +27,37 @@ export AWS_DEFAULT_REGION=eu-central-1                                #  {your a
 ```sh
 terraform init                      # Prepare to create infrastructure
 terraform plan                      # Dry Run
-terraform apply                     # Apply tf file
+TF_LOG=DEBUG terraform apply        # Apply tf file / Verbose mode
 terraform output                    # Show output section in a .tf file 
 terraform show                      # Indicate what can be shown in output section
 ```
 _aws_instance.Ubuntu: Creation complete after 36s [id=i-0b5276cc263987e99]_
-
-- Lets find out the content of our script.sh
+- If we need to run a sequence of commands - script will be great. Use command file("*.sh")
+- Lets find out the content of our script.sh via terraform
 terraform console
 file("script.sh")
 
-- Lets add outputs.tf file. It will extend terraform outputs 
+- Lets add outputs.tf file. It will extend terraform outputs  
+Now we can see our instance ip's.
+
+- Create file named variables.tf to avoid hardcoding in our "main" file (AWS.tf)  
+If we set them up as defalts and want to change, all we need is to run it this way
+```sh
+terraform (plan or apply) -var="region=us-west-1" -var=""
+#!!!!!!!!!!!!!!!_________________OR_______________!!!!!!!!!!!!!!!!
+export TF_VAR_region=us-west-1
+terraform (plan or apply)
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!OR create a file named terraform.tfvars or (even better) *.auto.tfwars. For example:
+terraform (plan or apply) -var-file="stage.auto.tfvars"
+```
+And we will get _The image id '[ami-0d527b8c289b4af7f]' does not exist_ lol. Because AMI needs to be unhardcoded as well!!
+Do not forget to monitor all your instances in all regions. It may be expensive.
+Go https://console.aws.amazon.com/vpc/home - Running Instances - Only this region
+
 - Now we create DataSource folder with file DataSource.tf in it
  ```sh
- mkdir -p DataSource/DataSource.tf
+ mkdir DataSource && cd DataSource
+ vi DataSource.tf
  ```
 - From data sources we can pull the data we need without even an acces to the aws console!! Just play   
 ```sh

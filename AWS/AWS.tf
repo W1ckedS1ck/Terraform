@@ -1,20 +1,33 @@
 # Start t2.micro instance in AWS
 
 provider "aws" {
-  access_key = "AKIAVW4O6LWCEL35GXF3"
-  secret_key = "pR+"
-  region     = "eu-central-1"
+access_key = "AKIAVW4O6LWCFOTXYANP"
+secret_key = "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"
+  region = var.region
 }
-
+provider "aws" {
+  access_key = "AKIAVW4O6LWCFOTXYANP"
+  secret_key = "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"
+  region = "eu-central-1"
+  alias = "GERMANY"
+}
+data "aws_ami" "latest_ubuntu" {
+  owners = ["099720109477"]
+  most_recent = true
+  filter {
+    name = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+}
 resource "aws_instance" "Ubuntu" {
   #count = 1
-  ami                    = "ami-0d527b8c289b4af7f" # ubuntu lts
-  instance_type          = "t2.micro"
+  ami                    = data.aws_ami.latest_ubuntu.id                                       # ubuntu lts
+  instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.My_app.id]                          # This is the reference for resource [ "aws_security_group" "My_app" ]
                                                                                    # which will be created at next block
   user_data = file("script.sh")                                                           # Load our script to run
   tags = {
-    "Name"    = "AWS_Instance"
+    "Name"    = "AWS_Instance_build_by_Terraform"
     "Owner"   = "Vitali Kuts"
     "Project" = "TERRAform"
   }
@@ -24,12 +37,13 @@ resource "aws_instance" "Ubuntu" {
     #  create_before_destroy = true                                                       # Need to set up elastic ip first
   }
 }
-
+#/*
 resource "aws_instance" "DataBase" {
-  ami           = "ami-0d527b8c289b4af7f" # ubuntu lts
-  instance_type = "t2.micro"
+  provider = aws.GERMANY
+  ami           = data.aws_ami.latest_ubuntu.id                                                 # ubuntu lts
+  instance_type = "t2.nano"
   tags = {
-    "Name" = "AWS_DataBase"
+    "Name" = "AWS_DataBase_build_by_Terraform"
   }
   depends_on = [aws_instance.Ubuntu]                                                      # DB will be created after Ubuntu
 }
@@ -44,9 +58,9 @@ resource "aws_security_group" "My_app" {
   description = "La-la-la. LOL."
 
   dynamic "ingress" {                                                                     # dynamic can create bunch of task
-    for_each = ["80", "443", "8080", "22"]
+    for_each = var.ports
     content {
-      description = "open port 80"
+    #  description = "open port ${var.ports}"
       from_port   = ingress.value
       to_port     = ingress.value
       protocol    = "tcp"
