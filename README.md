@@ -1,5 +1,8 @@
 # **This is my trainee with Terraform and clouds**
 ---
+<img alt="Terraform" src="https://www.datocms-assets.com/2885/1629941242-logo-terraform-main.svg" width="600px">   
+
+---
 - Installing Terraform. "curl" should be allready installed on your system.
 ```sh
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
@@ -11,7 +14,7 @@ terraform -install-autocomplete
 - Now restart your shell to enable tab completion
 ---
 ## AWS
-- Go to https://console.aws.amazon.com/iamv2/home?#/home and create new user for TF  
+- Go to [IAM tab](https://console.aws.amazon.com/iamv2/home?#/home) and create new user for TF  
 
 Identity and Access Management (IAM) - Users - Access key - Programmatic access - Attach existing policies directly - AdministratorAccess
 
@@ -51,8 +54,8 @@ terraform (plan or apply)
 terraform (plan or apply) -var-file="stage.auto.tfvars"
 ```
 And we will get _The image id '[ami-0d527b8c289b4af7f]' does not exist_ lol. Because AMI needs to be unhardcoded as well!!
-Do not forget to monitor all your instances in all regions. It may be expensive.
-Go https://console.aws.amazon.com/vpc/home - Running Instances - Only this region
+Do not forget to monitor all your instances in all regions. It may cost you a fortune.
+Go to [AWS VPC](https://console.aws.amazon.com/vpc/home) - Running Instances - Only this region
 
 - Now we create DataSource folder with file DataSource.tf in it
  ```sh
@@ -66,10 +69,24 @@ terraform apply
 ```
  - Outpul values can be used as variables this way ${values}
 
-
-
 ```sh
 terraform destroy # Shut down all the instances mentioned in .tf file
 ```
 
 > Note:  "terraform fmt" command is used to rewrite Terraform configuration files to a canonical format and style. :)
+---
+
+## GCP
+- Lets create a new folder
+```sh
+mkdir GCP && cd GCP
+touch GCP.tf
+```
+- Creds can be created at [IAM tab](https://console.cloud.google.com/iam-admin/serviceaccounts?project=myproject-334822) and exported like from AWS one:
+```sh
+export GOOGLE_CLOUD_KEYFILE_JSON="gcp.json"
+```
+- List of available images in the current progect can be found by pressing (>) buttor (top right corner) in the GCP console. Type down this
+```
+gcloud compute images list
+```

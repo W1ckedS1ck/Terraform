@@ -1,15 +1,10 @@
 # Start t2.micro instance in AWS
 
 provider "aws" {
-access_key = "AKIAVW4O6LWCFOTXYANP"
-secret_key = "lUW7dD8TjCkuRzhi8+"
+  access_key = "AKIAVW4O6LWCA6IX3XNU"
+  secret_key = "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"
   region = var.region
-}
-provider "aws" {
-  access_key = "AKIAVW4O6LWCFOTXYANP"
-  secret_key = "lUW7dD8TjCkuRzhi8+"
-  region = "eu-central-1"
-  alias = "GERMANY"
+ # alias = "MyOwnRegion"
 }
 data "aws_ami" "latest_ubuntu" {
   owners = ["099720109477"]
@@ -39,7 +34,7 @@ resource "aws_instance" "Ubuntu" {
 }
 #/*
 resource "aws_instance" "DataBase" {
-  provider = aws.GERMANY
+#  provider = aws.MyOwnRegion
   ami           = data.aws_ami.latest_ubuntu.id                                                 # ubuntu lts
   instance_type = "t2.nano"
   tags = {
