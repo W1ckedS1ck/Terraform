@@ -1,9 +1,9 @@
-# Start t2.micro instance in AWS
+# Start instances in AWS
 
 provider "aws" {
-  access_key = "AKIAVW4O6LWCA6IX3XNU"
-  secret_key = "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"
   region = var.region
+  shared_credentials_file = "credentials"
+  profile                 = "vitalik"
  # alias = "MyOwnRegion"
 }
 data "aws_ami" "latest_ubuntu" {
@@ -12,6 +12,15 @@ data "aws_ami" "latest_ubuntu" {
   filter {
     name = "name"
     values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+}
+terraform {
+  backend "s3" {
+    profile        = "profile"
+    bucket         = "temp-terr-states"
+    key            = "terraform.tfstate"
+    region         = "us-east-1"                                                          # do not use vars here
+    encrypt        = true
   }
 }
 resource "aws_instance" "Ubuntu" {
@@ -36,7 +45,7 @@ resource "aws_instance" "Ubuntu" {
 resource "aws_instance" "DataBase" {
 #  provider = aws.MyOwnRegion
   ami           = data.aws_ami.latest_ubuntu.id                                                 # ubuntu lts
-  instance_type = "t2.nano"
+  instance_type = var.instance_type
   tags = {
     "Name" = "AWS_DataBase_build_by_Terraform"
   }
