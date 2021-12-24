@@ -1,5 +1,5 @@
 variable "region" {
-  description = "Enter AWS region to proceed"                                   # type = string
+  description = "Enter AWS region to proceed" # type = string
   default     = "eu-central-1"
 }
 variable "instance_type" {
@@ -7,6 +7,6 @@ variable "instance_type" {
   default     = "t2.nano"
 }
 variable "ports" {
-  description = "Enter ports to be opened"                                      # Type = list
+  description = "Enter ports to be opened" # Type = list
   default     = ["80", "443", "8080", "22", "8080"]
 }

@@ -70,10 +70,12 @@ terraform apply
 ```
  - Outpul values can be used as variables this way ${values}
 
-- It is good practice to keep tfstate files in S3. Let implement it!  
-Go to [S3 bucket](https://s3.console.aws.amazon.com/s3/home) and create one. Later it will be created by HCL.  
-Now add backend "s3" block to AWS.tf. After it do reinit. After each tf apply tfstate file will be uploaded into s3 bucket! AWESOME!  
+- It is good practice to keep tfstate files in S3. Let implement it! 
 
+Go to [S3 bucket](https://s3.console.aws.amazon.com/s3/home) and create one. Later it will be created by HCL.  
+Now add backend "s3" block to AWS.tf. Do reinit. After each tf apply tfstate file will be uploaded into s3 bucket! AWESOME!  
+Even tfstate file will be deleted - it is ok. TF knows how to get it back)
+- If we want to protect our project from parallel terraform running - we shoud create DynamyDB lock state and add the string "dynamodb_table = "name" in AWS.tf
 ```sh
 terraform destroy # Shut down all the instances mentioned in .tf file
 ```
