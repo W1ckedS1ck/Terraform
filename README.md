@@ -19,14 +19,14 @@ terraform -install-autocomplete
 Identity and Access Management (IAM) - Users - Access key - Programmatic access - Attach existing policies directly - AdministratorAccess
 
 - Lets create our first tf file in AWS folder and call it AWS.tf
-
 - So that no one can see our credits, we will do this (BTW aws-cli works with this envs too):
 ```bash
-export AWS_ACCES_KEY_ID=AKIAVW4O6LWCEL35GXF3                          #  {your access_key}
-export AWS_SECRET_ACCES_KEY=pR+                                       #  {your secret_key} *THIS ONE IS FAKE*
-export AWS_DEFAULT_REGION=eu-central-1                                #  {your aws region}
+export AWS_ACCES_KEY_ID=AKIAVW4O6LWCEL35GXF3            #  {your access_key}
+export AWS_SECRET_ACCES_KEY=pR+                         #  {your secret_key} *THIS ONE IS FAKE*
+export AWS_DEFAULT_REGION=eu-central-1                  #  {your aws region}
 ```
-
+- To aviod them showing in history just add " " (space) before.
+- I created file named "credentials" and put "aws_access_key_id =" and  "aws_secret_access_key ="  
 ```sh
 terraform init                      # Prepare to create infrastructure
 terraform plan                      # Dry Run
@@ -47,10 +47,11 @@ Now we can see our instance ip's.
 If we set them up as defalts and want to change, all we need is to run it this way
 ```sh
 terraform (plan or apply) -var="region=us-west-1" -var=""
-#!!!!!!!!!!!!!!!_________________OR_______________!!!!!!!!!!!!!!!!
+#!!!!!!!!__________OR_________!!!!!!!!
 export TF_VAR_region=us-west-1
 terraform (plan or apply)
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!OR create a file named terraform.tfvars or (even better) *.auto.tfwars. For example:
+#!!!!!!!!OR create a file named terraform.tfvars   
+# or (even better) *.auto.tfwars. For example:
 terraform (plan or apply) -var-file="stage.auto.tfvars"
 ```
 And we will get _The image id '[ami-0d527b8c289b4af7f]' does not exist_ lol. Because AMI needs to be unhardcoded as well!!
@@ -69,11 +70,13 @@ terraform apply
 ```
  - Outpul values can be used as variables this way ${values}
 
+- It is good practice to keep tfstate files in S3. Let implement it!  
+Go to [S3 bucket](https://s3.console.aws.amazon.com/s3/home) and create one. Later it will be created by HCL.  
+Now add backend "s3" block to AWS.tf. After it do reinit. After each tf apply tfstate file will be uploaded into s3 bucket! AWESOME!  
+
 ```sh
 terraform destroy # Shut down all the instances mentioned in .tf file
 ```
-
-> Note:  "terraform fmt" command is used to rewrite Terraform configuration files to a canonical format and style. :)
 ---
 
 ## GCP
@@ -90,3 +93,5 @@ export GOOGLE_CLOUD_KEYFILE_JSON="gcp.json"
 ```
 gcloud compute images list
 ```
+
+> Note:  "terraform fmt" command is used to rewrite Terraform configuration files to a canonical format and style. :)

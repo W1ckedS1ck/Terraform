@@ -4,7 +4,7 @@ variable "region" {
 }
 variable "instance_type" {
   description = "Enter instance type to proceed"
-  default     = "t2.micro"
+  default     = "t2.nano"
 }
 variable "ports" {
   description = "Enter ports to be opened"                                      # Type = list

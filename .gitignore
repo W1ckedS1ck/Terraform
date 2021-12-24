@@ -3,6 +3,6 @@
 *.tfstate.backup
 *.tfvars
 .terraform*
-.key
 secret*
 GCP.json
+credentials
